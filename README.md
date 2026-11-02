@@ -147,3 +147,17 @@ No build step, no npm dependencies.
   placement test. The full-stack build has the 20-question version.
 - **Classroom photo** (`hero.jpg`) is a generic photo from the old repo, not
   a photo of the real academy — replace with real academy photos.
+
+## Homepage (new reference, index.html only)
+The homepage now follows the owner's latest reference screenshot: navy top bar with centred BBC logo, full-bleed photo hero (`hero-home.jpg`, generated student/Big Ben photo), stacked CTAs (Start your journey now + Log in), 3-feature glass card and 3-stat white card. Other pages keep the dark/red identity.
+**Homepage stats (+10,000 students, 95% success rate, 5.0 student rating) are design placeholders copied from the reference screenshot — NOT verified academy facts. The owner must confirm or correct every one before any public launch.**
+
+## Homepage placeholders (owner must replace before public launch)
+- Hero stats (+10,000 / 95% / 5.0) are the figures from the reference screenshot
+  and are NOT verified academy figures — the owner must confirm or correct them.
+- Teacher photos on the homepage are illustrative AI-generated placeholders
+  (specialism only, no invented names or bios). Replace them with real staff
+  photos, with each teacher's consent, before launch.
+- The homepage registration form is a demo form in the frontend-only build:
+  it shows a success message and does not send or store anything. The
+  full-stack build is where real submissions belong.
