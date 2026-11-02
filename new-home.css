@@ -49,6 +49,8 @@ img { display: block; max-width: 100%; }
 .lang-toggle { background: transparent; color: white; border: 1px solid rgba(255,255,255,.34); padding: 8px 11px; border-radius: 3px; font-size: 12px; }
 .nav-cta, .button { display: inline-flex; justify-content: center; align-items: center; gap: 12px; background: var(--red); border: 1px solid var(--red); color: white; padding: 14px 20px; font-size: 13px; font-weight: 700; border-radius: 3px; transition: background .2s ease, transform .2s ease; }
 .nav-cta { padding: 11px 15px; font-size: 12px; }
+.nav-cta-ghost { background: transparent; border-color: rgba(255,255,255,.55); color: white; }
+.nav-cta-ghost:hover { background: rgba(255,255,255,.12); }
 .nav-cta:hover, .button:hover { background: var(--red-deep); transform: translateY(-2px); }
 .button-outline { background: transparent; border-color: rgba(255,255,255,.48); }
 .button-outline:hover { background: rgba(255,255,255,.1); }
@@ -182,6 +184,7 @@ img { display: block; max-width: 100%; }
 @media (max-width: 900px) {
   .nav-links { gap: 14px; font-size: 12px; }
   .nav-cta { display: none; }
+  .nav-cta-ghost { display: inline-flex; padding: 8px 12px; font-size: 12px; }
   .course-layout { gap: 40px; }
   .approach-grid, .enroll-grid { gap: 52px; }
   .story-grid { gap: 50px; }
@@ -194,12 +197,15 @@ img { display: block; max-width: 100%; }
   html { scroll-padding-top: 72px; }
   .topbar { height: 68px; }
   .nav-inner { gap: 10px; }
+  .brand-copy small { display: none; }
+  .brand-copy strong { font-size: 12px; }
   .menu-toggle { display: block; order: 2; }
   .nav-actions { margin-inline-start: auto; }
   .lang-toggle { padding: 7px 9px; }
   .nav-links { display: none; position: absolute; top: 68px; inset-inline: 0; padding: 10px 22px 22px; background: var(--navy-deep); flex-direction: column; align-items: stretch; gap: 0; box-shadow: 0 14px 24px rgba(0,0,0,.18); }
   .nav-links.open { display: flex; max-height: calc(100svh - 68px); overflow-y: auto; }
-  .nav-group-label { display: block; padding: 16px 4px 6px; font-size: 12px; color: #e4b498; }
+  .nav-group-label { display: block; padding: 20px 4px 6px; margin-top: 12px; border-top: 1px solid rgba(255,255,255,.22); font-size: 12px; color: #e4b498; }
+  .nav-page-link { padding-inline-start: 14px; }
   .nav-page-link { display: block; }
   .nav-links a { padding: 14px 4px; border-bottom: 1px solid rgba(255,255,255,.1); font-size: 14px; }
   .hero { height: auto; min-height: 710px; align-items: end; padding-bottom: 75px; }
@@ -362,3 +368,6 @@ img { display: block; max-width: 100%; }
   .teacher-overlay { inset-inline: 20px; bottom: 20px; }
   .teacher-overlay h3 { font-size: 26px; }
 }
+
+.hero-student-login { margin-top: 22px; font-size: 13px; color: rgba(255,255,255,.85); }
+.hero-student-login a { color: #fff; font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }

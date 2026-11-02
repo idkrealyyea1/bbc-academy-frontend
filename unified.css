@@ -114,10 +114,28 @@ td{border-bottom:1px solid var(--u-line);padding:12px}
   .footer-bottom{flex-direction:column;gap:8px}
 }
 
-/* Teacher profile cards on teachers.html: photo on top, name, specialism, bio. */
-.teacher-profile { overflow: hidden; padding: 0 0 18px; }
-.teacher-profile-photo { display: block; width: 100%; height: 260px; object-fit: cover; object-position: center 22%; }
-.teacher-profile .tag, .teacher-profile h3, .teacher-profile p { margin-inline: 18px; }
+/* Teacher profile cards on teachers.html: premium, like the main-page teacher cards. */
+.teacher-profile { overflow: hidden; padding: 0 0 22px; border-radius: 16px; box-shadow: 0 18px 40px rgba(16,42,67,.14); transition: transform .2s ease; }
+.teacher-profile:hover { transform: translateY(-3px); }
+.teacher-profile-photo { display: block; width: 100%; height: 300px; object-fit: cover; object-position: center 22%; }
+.teacher-profile .tag, .teacher-profile h3, .teacher-profile p { margin-inline: 22px; }
+.teacher-profile .tag { background: #c94243; color: #fff; border: 0; border-radius: 999px; padding: 6px 14px; margin-top: 20px; }
+.teacher-profile h3 { font-size: 28px; margin-top: 14px; margin-bottom: 6px; }
+.teacher-profile p { line-height: 1.8; }
+.teacher-profile .teacher-meta { color: #64727b; font-size: 13px; border-top: 1px solid rgba(16,42,67,.12); padding-top: 14px; margin-top: 16px; }
+.teacher-profile p:last-child { margin-bottom: 0; }
+.teacher-profile .btn { border-radius: 8px; padding: 13px 22px; }
+/* FAQ redesign: rounded, shadowed, red accent when open, CTA strip. */
+.faq-item { border-radius: 14px; box-shadow: 0 12px 28px rgba(16,42,67,.08); padding: 22px 24px; margin-bottom: 14px; position: relative; overflow: hidden; }
+.faq-item::before { content: ''; position: absolute; inset-inline-start: 0; top: 0; bottom: 0; width: 4px; background: #c94243; opacity: 0; }
+.faq-item[open]::before { opacity: 1; }
+.faq-item summary { font-size: 17px; line-height: 1.7; color: #102a43; }
+.faq-item p { color: #64727b; line-height: 1.9; margin: 14px 0 0; padding-top: 14px; border-top: 1px solid rgba(16,42,67,.12); }
+.faq-cta { margin-top: 28px; background: #102a43; color: #fff; border-radius: 16px; padding: 28px 24px; text-align: center; }
+.faq-cta p { color: rgba(255,255,255,.75); line-height: 1.8; }
+.faq-cta .btn { margin: 4px; }
+.faq-cta .btn.outline { border-color: rgba(255,255,255,.6); color: #fff !important; }
+.faq-cta .btn.outline:hover { background: rgba(255,255,255,.1); }
 .teacher-profile .tag { display: inline-block; margin-top: 16px; }
 .teacher-profile h3 { margin-top: 10px; }
 
@@ -142,3 +160,13 @@ td{border-bottom:1px solid var(--u-line);padding:12px}
 .pricing-note { margin-top: 34px; background: #fffdf8; border: 1px solid rgba(16,42,67,.14); border-radius: 16px; padding: 24px; text-align: center; }
 .pricing-note p { line-height: 1.8; color: #64727b; }
 @media (max-width: 680px) { .plan-featured { transform: none; } .plan-card { padding: 22px 20px; } }
+
+/* About story: long, image-led chapters, alternating on desktop. */
+.story-hero { width: 100%; height: 420px; object-fit: cover; border-radius: 16px; box-shadow: 0 18px 40px rgba(16,42,67,.16); margin: 28px 0 12px; }
+.story-chapter { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; margin: 52px 0; }
+.story-chapter.flip .story-img { order: 2; }
+.story-img { width: 100%; height: 320px; object-fit: cover; border-radius: 16px; box-shadow: 0 18px 40px rgba(16,42,67,.14); }
+.story-kicker { color: #c94243; font-size: 12px; font-weight: 700; letter-spacing: .08em; }
+.story-chapter h3 { font-size: 28px; margin: 10px 0 10px; line-height: 1.35; }
+.story-chapter p { color: #64727b; line-height: 1.9; }
+@media (max-width: 680px) { .story-hero { height: 260px; } .story-chapter { grid-template-columns: 1fr; gap: 18px; margin: 38px 0; } .story-chapter.flip .story-img { order: 0; } .story-img { height: 240px; } }
