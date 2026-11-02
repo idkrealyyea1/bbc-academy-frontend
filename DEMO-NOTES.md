@@ -1,46 +1,40 @@
-# BBC English Academy — 5-Minute Demo Script
+# BBC English Academy — 5-Minute Demo Script (internal presenter notes)
 
 **Open:** `python3 -m http.server 8000` in `bbc-frontend-only/`, then
-http://localhost:8000/ — or just open `index.html`.
+http://localhost:8000/
 
-Say first: *"This is a visual demo only. No bookings, prices, teachers or
-contact details here are real yet — everything marked TODO/demo will be
-replaced with your confirmed information."*
+Say first, out loud: *"This is the presentation build — the design, the
+pages and the flows. The academy's real details (stats, teachers, prices,
+address, photos) are confirmed with the owner before anything goes public;
+nothing on these pages should be read as a verified fact yet."*
 
 ## Minute 0–1 — Home + language
-1. Home (`index.html`): hero, features, popular courses.
+1. Home: reference hero (faint letters, red pill, serif headline, 2×2
+   stats), features, How it works.
 2. Click **العربية** (top right): the whole page flips to RTL Arabic.
    Click **English** to flip back. The choice sticks across pages.
 
 ## Minute 1–2 — Courses + detail
-3. **Courses**: click the level filters (Beginner / Elementary /
-   Intermediate / Advanced) — the grid filters instantly.
-4. Click **Details & enrol** on any course → `course.html?id=...` shows
-   that course's detail, then **Book your seat**.
+3. **Courses**: click the level filters — the grid filters instantly.
+4. Click **Details & enrol** on any course → detail page, then
+   **Book this course**.
 
 ## Minute 2–3 — Placement test + booking
 5. **Levels & Placement Test**: click **Start quiz**, answer 6 questions,
-   get a demo level result (clearly labelled demo, not official).
+   get a level result and a recommended next step.
 6. **Book a seat**: fill the form, submit → success message appears
-   (nothing is actually sent — say so out loud).
+   (in this frontend-only build nothing is sent or stored — say so).
 
 ## Minute 3–4 — Dashboards
-7. **Dashboards** (nav) → student dashboard: progress bar, attendance,
-   homework table (all mock numbers).
-8. From there, open **Teacher dashboard** and **Admin dashboard**
-   (links at the bottom) — class lists and invented admin totals.
+7. **Dashboards** (mobile menu / footer) → student dashboard: progress,
+   attendance, homework. Then teacher and admin dashboards from the links.
 
 ## Minute 4–5 — Pricing, teachers, login, close
-9. **Pricing**: point out every price is "XX / month — TODO" on purpose.
-10. **Teachers**: point out all six profiles are labelled demo placeholders.
-11. **Login / Sign up**: any input shows a demo success message only.
-12. Close with the TODO list in `README.md`: real story, address, phone,
-    teachers, courses, prices, policies — then the full-stack build
-    (separate project) can start.
-
-## If something looks broken
-- Course detail blank? Make sure you opened it via the local server
-  (`http://localhost:8000/course.html?id=ielts`), not just the file path
-  without a query string — or click through from Courses, which always
-  passes the id.
-- Language stuck? The toggle is the dark button at the top right of every page.
+8. **Pricing**: three plans, "Fees on enquiry" — real prices are set by
+   the owner before launch.
+9. **Teachers**: shown by specialism only — real staff come with consent.
+10. **Login / Sign up**: screens work as a flow preview in this build;
+    real accounts live in the full-stack build.
+11. Close with the owner-confirmation list in `README.md`: hero stats,
+    teachers, prices, address/phone, photos, trading name — then the
+    full-stack build (separate repo) is deployed with the backend.

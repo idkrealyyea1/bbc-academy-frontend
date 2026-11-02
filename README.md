@@ -97,3 +97,53 @@ No build step, no npm dependencies.
 - `styles.css` — all styling
 - `app.js` — language toggle, course catalogue/filter/detail, mock quiz, mock forms
 - `DEMO-NOTES.md` — 5-minute demo script
+
+## Design — 2026-11-02 redesign (client presentation build)
+
+- **Identity:** restored from the academy's own earlier design, as confirmed by
+  the owner's reference screenshot: near-black `#0A0A0A`, BBC red `#D60000` /
+  `#FF2D2D`, Inter for UI, Playfair Display for display headlines, Tajawal
+  for Arabic. One `styles.css` is shared with the full-stack frontend so the
+  two can never diverge again.
+- **Hero (exact reference):** faint oversized background letters (A, N, C, B,
+  E) + subtle red sparkles, outlined red pill `PREMIUM ENGLISH EDUCATION`,
+  centred serif headline `Master English` (white) / `Unlock Your Future`
+  (red), the reference paragraph, solid red `Start Learning →` + dark
+  outlined `Explore Courses`, and a 2×2 stats grid.
+- **Navigation:** sticky blurred header, red `BBC` wordmark with
+  `ENGLISH ACADEMY` underneath. Desktop shows the primary links on one row
+  (Blog / FAQ / Dashboards live in the footer and in the mobile panel);
+  at ≤1024px a hamburger opens a solid, scrollable panel — the nav never
+  wraps into multiple rows.
+- **First-screen pattern (ui-ux-pro-max, Hero-Centric + proof):** hero →
+  features → How it works (3 steps) → courses → dashboards preview → final
+  CTA. Motion is restrained (≤2px hover, 12px / 350ms scroll reveal, honours
+  `prefers-reduced-motion`). No emoji icons — SVG / typographic marks only.
+- **Performance:** no hero photo (typographic hero), one 15.6KB stylesheet,
+  one small JS file, Google Fonts with `display=swap` and preconnect. The
+  only photo is `hero.jpg` (classroom photo from the old repo, compressed
+  7.8MB → 177KB, lazy-loaded, About page only).
+- **Client-facing pages carry no visible TODO / demo / placeholder text.**
+  That honesty lives here and in code comments, not on the site.
+
+## What is NOT yet real — owner must confirm/correct before any public launch
+
+- **Hero stats (10,000+ students, 95% success, 50+ teachers, 20+ courses)**
+  are the old site's figures, reproduced for the reference layout. They are
+  NOT verified academy facts — the owner must confirm or correct every one.
+- **Teachers** are shown by specialism only (no names, photos or bios).
+  Real staff must be supplied with consent before launch.
+- **Prices** are shown as "Fees on enquiry" — no currency or amount is
+  claimed. The owner must set real prices/currency.
+- **No address, phone, email or opening hours** are shown anywhere, because
+  none was provided or verified. Do not invent them.
+- **"BBC" name:** the site is not affiliated with the British Broadcasting
+  Corporation (BBC) — stated in the footer. The owner must confirm the
+  exact trading name / affiliation position before launch.
+- **Forms, login and signup** in this frontend-only build show success
+  messages on the page only; nothing is sent or stored. The full-stack
+  build provides the real backend for these flows.
+- **Placement quiz** here is a short 6-question guide, not an official
+  placement test. The full-stack build has the 20-question version.
+- **Classroom photo** (`hero.jpg`) is a generic photo from the old repo, not
+  a photo of the real academy — replace with real academy photos.
