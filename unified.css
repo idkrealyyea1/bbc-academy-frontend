@@ -113,3 +113,32 @@ td{border-bottom:1px solid var(--u-line);padding:12px}
   main h1{font-size:36px}
   .footer-bottom{flex-direction:column;gap:8px}
 }
+
+/* Teacher profile cards on teachers.html: photo on top, name, specialism, bio. */
+.teacher-profile { overflow: hidden; padding: 0 0 18px; }
+.teacher-profile-photo { display: block; width: 100%; height: 260px; object-fit: cover; object-position: center 22%; }
+.teacher-profile .tag, .teacher-profile h3, .teacher-profile p { margin-inline: 18px; }
+.teacher-profile .tag { display: inline-block; margin-top: 16px; }
+.teacher-profile h3 { margin-top: 10px; }
+
+/* Pricing redesign: fuller, premium cards, featured plan stands out. */
+.pricing-grid { align-items: stretch; }
+.plan-card { display: flex; flex-direction: column; border-radius: 16px; box-shadow: 0 14px 34px rgba(16,42,67,.10); padding: 26px 24px; }
+.plan-card::before { content: ''; display: block; height: 4px; border-radius: 999px; background: #c94243; margin: -26px -24px 20px; }
+.plan-kicker { color: #c94243; font-size: 11px; letter-spacing: .08em; margin: 0 0 6px; }
+.plan-card h3 { font-size: 26px; margin: 0 0 8px; }
+.plan-desc { color: #64727b; line-height: 1.7; margin: 0 0 14px; }
+.plan-card .price { font-size: 18px; font-weight: 700; color: #102a43; background: #f6f2e9; border-radius: 10px; padding: 12px 14px; margin: 0 0 16px; }
+.plan-features { list-style: none; padding: 0; margin: 0 0 20px; display: grid; gap: 10px; }
+.plan-features li { padding-inline-start: 26px; position: relative; line-height: 1.6; }
+.plan-features li::before { content: '✓'; position: absolute; inset-inline-start: 0; color: #c94243; font-weight: 700; }
+.plan-cta { width: 100%; margin-top: auto; text-align: center; }
+.plan-featured { background: #102a43; color: #fff; transform: scale(1.03); box-shadow: 0 22px 48px rgba(16,42,67,.28); }
+.plan-featured::before { background: #e4b498; margin: -26px -24px 20px; }
+.plan-featured h3, .plan-featured .plan-desc { color: #fff; }
+.plan-featured .plan-desc { color: rgba(255,255,255,.72); }
+.plan-featured .price { background: rgba(255,255,255,.10); color: #fff; }
+.plan-featured .tag { background: #c94243; color: #fff; }
+.pricing-note { margin-top: 34px; background: #fffdf8; border: 1px solid rgba(16,42,67,.14); border-radius: 16px; padding: 24px; text-align: center; }
+.pricing-note p { line-height: 1.8; color: #64727b; }
+@media (max-width: 680px) { .plan-featured { transform: none; } .plan-card { padding: 22px 20px; } }
