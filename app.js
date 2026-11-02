@@ -4,7 +4,23 @@ function getLang(){return localStorage.getItem(LANG_KEY)||'en'}
 function applyLang(lang){
   localStorage.setItem(LANG_KEY,lang);
   document.documentElement.lang=lang; document.documentElement.dir=(lang==='ar'?'rtl':'ltr');
-  document.querySelectorAll('[data-en]').forEach(el=>{ el.textContent = lang==='ar' ? (el.dataset.ar||el.dataset.en) : el.dataset.en; });
+  // HARDENING: never rewrite an element that contains form controls or child
+  // elements. textContent replacement on such an element DESTROYS its children
+  // (this once deleted every <input> inside form labels). Translatable text
+  // must live in its own leaf <span data-en data-ar>; controls are siblings.
+  document.querySelectorAll('[data-en]').forEach(el=>{
+    if (el.querySelector('input,select,textarea')) return;
+    if (el.children.length) return;
+    el.textContent = lang==='ar' ? (el.dataset.ar||el.dataset.en) : el.dataset.en;
+  });
+  // Placeholders: <input data-ph-en="..." data-ph-ar="...">
+  if (typeof window.__onLangChange==='function') window.__onLangChange(lang);
+  document.querySelectorAll('[data-alt-en]').forEach(el=>{
+    el.alt = lang==='ar' ? (el.dataset.altAr||el.dataset.altEn) : el.dataset.altEn;
+  });
+  document.querySelectorAll('[data-ph-en]').forEach(el=>{
+    el.placeholder = lang==='ar' ? (el.dataset.phAr||el.dataset.phEn) : el.dataset.phEn;
+  });
   const b=document.getElementById('langBtn'); if(b) b.textContent = lang==='ar' ? 'English' : 'العربية';
   if(typeof renderCourses==='function' && document.getElementById('courseGrid')) renderCourses(window.__filter||'all',lang);
   if(typeof renderCourseDetail==='function' && document.getElementById('courseDetail')) renderCourseDetail(lang);
@@ -37,12 +53,14 @@ const COURSES=[
 function renderCourses(filter,lang){
   const grid=document.getElementById('courseGrid'); if(!grid) return;
   const list=COURSES.filter(c=>filter==='all'||c.level===filter);
-  grid.innerHTML=list.map(c=>`<article class="card"><span class="tag">${c.level}</span><h3>${lang==='ar'?c.ar:c.en}</h3><p class="muted">${lang==='ar'?c.desc_ar:c.desc_en}</p><p><strong>${c.weeks}</strong> ${lang==='ar'?'أسابيع':'weeks'} · <strong>${c.lessons}</strong> ${lang==='ar'?'درس':'lessons'}</p><p><a class="btn small" href="course.html?id=${c.id}">${lang==='ar'?'التفاصيل والتسجيل':'Details & enrol'}</a></p></article>`).join('') || `<p class="muted">No courses in this level.</p>`;
+  grid.innerHTML=list.map(c=>`<article class="card"><span class="tag">${lang==='ar'?({Beginner:'مبتدئ',Elementary:'ابتدائي',Intermediate:'متوسط',Advanced:'متقدم'}[c.level]||c.level):c.level}</span><h3>${lang==='ar'?c.ar:c.en}</h3><p class="muted">${lang==='ar'?c.desc_ar:c.desc_en}</p><p><strong>${c.weeks}</strong> ${lang==='ar'?'أسابيع':'weeks'} · <strong>${c.lessons}</strong> ${lang==='ar'?'درس':'lessons'}</p><p><a class="btn small" href="course.html?id=${c.id}">${lang==='ar'?'التفاصيل والتسجيل':'Details & enrol'}</a></p></article>`).join('') || `<p class="muted">${lang==='ar'?'لا توجد دورات في هذا المستوى.':'No courses in this level.'}</p>`;
 }
 function renderCourseDetail(lang){
   const params=new URLSearchParams(location.search); const c=COURSES.find(x=>x.id===params.get('id'))||COURSES[0];
   const el=document.getElementById('courseDetail'); if(!el) return;
-  el.innerHTML=`<span class="tag">${c.level}</span><h1>${lang==='ar'?c.ar:c.en}</h1><p class="muted">${lang==='ar'?c.desc_ar:c.desc_en}</p><p><strong>${c.weeks}</strong> ${lang==='ar'?'أسابيع':'weeks'} · <strong>${c.lessons}</strong> ${lang==='ar'?'درس':'lessons'} · ${lang==='ar'?'الرسوم عند الاستفسار':'Fees on enquiry'}</p><div class="grid grid2"><div class="card"><h3>${lang==='ar'?'ماذا ستتعلم؟':'What you will learn'}</h3><ul><li>Speaking & listening</li><li>Reading & writing</li><li>Vocabulary & grammar</li><li>Real-life practice</li></ul></div><div class="card"><h3>${lang==='ar'?'تفاصيل الدورة':'Course details'}</h3><p>Small groups and speaking-first lessons. Your schedule and group are confirmed when you book.<br>${lang==='ar'?'تُؤكَّد المواعيد والمجموعة عند الحجز.':'Schedule and group are confirmed when you book.'}</p><p><a class="btn" href="booking.html">${lang==='ar'?'احجز مقعدك':'Book your seat'}</a></p></div></div>`;
+  const learn = lang==='ar' ? ['التحدث والاستماع','القراءة والكتابة','المفردات والقواعد','ممارسة واقعية'] : ['Speaking & listening','Reading & writing','Vocabulary & grammar','Real-life practice'];
+  const lvlAr = {Beginner:'مبتدئ',Elementary:'ابتدائي',Intermediate:'متوسط',Advanced:'متقدم'}[c.level]||c.level;
+  el.innerHTML=`<span class="tag">${lang==='ar'?lvlAr:c.level}</span><h1>${lang==='ar'?c.ar:c.en}</h1><p class="muted">${lang==='ar'?c.desc_ar:c.desc_en}</p><p><strong>${c.weeks}</strong> ${lang==='ar'?'أسابيع':'weeks'} · <strong>${c.lessons}</strong> ${lang==='ar'?'درس':'lessons'} · ${lang==='ar'?'الرسوم عند الاستفسار':'Fees on enquiry'}</p><div class="grid grid2"><div class="card"><h3>${lang==='ar'?'ماذا ستتعلم؟':'What you will learn'}</h3><ul>${learn.map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="card"><h3>${lang==='ar'?'تفاصيل الدورة':'Course details'}</h3><p>${lang==='ar'?'مجموعات صغيرة وحصص تركّز على التحدث. تُؤكَّد المواعيد والمجموعة عند الحجز.':'Small groups and speaking-first lessons. Your schedule and group are confirmed when you book.'}</p><p><a class="btn" href="booking.html">${lang==='ar'?'احجز مقعدك':'Book your seat'}</a></p></div></div>`;
 }
 // Placement quiz (mock, 6 questions)
 const QUIZ=[
