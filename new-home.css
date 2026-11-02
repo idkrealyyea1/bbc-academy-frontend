@@ -167,7 +167,7 @@ img { display: block; max-width: 100%; }
 .success-box { display: none; background: #e9f0e9; border-inline-start: 3px solid #5c806d; color: #294a3c; padding: 13px 15px; margin-top: 14px; font-size: 12px; line-height: 1.7; }
 .success-box.visible { display: block; animation: reveal .3s ease both; }
 .footer { background: #091b2c; color: white; padding: 55px 0 24px; }
-.footer-main { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 40px; padding-bottom: 42px; }
+.footer-main { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1.3fr; gap: 40px; padding-bottom: 42px; }
 .footer-brand p { max-width: 290px; color: rgba(255,255,255,.52); line-height: 1.8; font-size: 12px; margin: 18px 0 0; }
 .footer-col h4 { margin: 0 0 16px; font-size: 12px; color: #e4b498; }
 .footer-links { display: grid; gap: 12px; font-size: 12px; color: rgba(255,255,255,.68); }
