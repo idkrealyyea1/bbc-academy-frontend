@@ -347,3 +347,18 @@ img { display: block; max-width: 100%; }
   .teacher-overlay h3 { font-size: 24px; }
   .teacher-info { padding-top: 10px; }
 }
+
+/* Teachers redesign (2026-11-02): cleaner cards, no clipped overlay text. */
+.teacher-photo { border-radius: 16px; box-shadow: 0 18px 40px rgba(0,0,0,.28); }
+.teacher-photo::after { inset: 30% 0 0; background: linear-gradient(0deg, rgba(8,26,44,.92) 0%, rgba(8,26,44,.55) 45%, transparent 78%); }
+.teacher-overlay { inset-inline: 22px; bottom: 22px; text-align: start; }
+.teacher-tag { display: inline-block; background: rgba(201,66,67,.92); color: #fff; padding: 6px 12px; border-radius: 999px; font-size: 11px; letter-spacing: .02em; margin-bottom: 10px; }
+.teacher-overlay h3 { font-size: 28px; line-height: 1.25; margin-bottom: 6px; }
+.teacher-overlay p { font-size: 13px; line-height: 1.7; max-width: 92%; }
+.teacher-info { border-top: 1px solid rgba(255,255,255,.16); padding-top: 14px; margin-top: 2px; }
+.teacher-initial { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16); border-radius: 999px; padding: 5px 10px; }
+@media (max-width: 680px) {
+  .teacher-photo { border-radius: 14px; }
+  .teacher-overlay { inset-inline: 20px; bottom: 20px; }
+  .teacher-overlay h3 { font-size: 26px; }
+}

@@ -5,7 +5,6 @@ const form = document.querySelector('#enrollment-form');
 const successMessage = document.querySelector('#form-success');
 
 let language = 'ar';
-let coursesExpanded = false;
 
 function setLanguage(nextLanguage) {
   language = nextLanguage;
@@ -28,9 +27,7 @@ function setLanguage(nextLanguage) {
     button.setAttribute('aria-label', button.dataset[language === 'ar' ? 'labelAr' : 'labelEn']);
   });
   const courseExpand = document.querySelector('#course-expand');
-  courseExpand.textContent = language === 'ar'
-    ? (coursesExpanded ? 'عرض دورات أقل' : 'استكشف جميع الدورات')
-    : (coursesExpanded ? 'Show fewer courses' : 'Explore all courses');
+  if (courseExpand) courseExpand.textContent = language === 'ar' ? 'استكشف جميع الدورات' : 'Explore all courses';
 
   document.querySelector('#name').placeholder = language === 'ar' ? 'الاسم الكامل' : 'Your full name';
   document.querySelector('#message').placeholder = language === 'ar' ? 'ما الذي تأمل أن تحققه؟' : 'What would you like to achieve?';
@@ -77,21 +74,6 @@ document.querySelectorAll('.course-more').forEach((button) => {
   });
 });
 
-const courseExpand = document.querySelector('#course-expand');
-courseExpand.addEventListener('click', () => {
-  coursesExpanded = !coursesExpanded;
-  courseExpand.setAttribute('aria-expanded', String(coursesExpanded));
-  document.querySelectorAll('.course-extra').forEach((course) => {
-    course.hidden = !coursesExpanded;
-    if (!coursesExpanded) {
-      course.classList.remove('open');
-      course.querySelector('.course-more').setAttribute('aria-expanded', 'false');
-    }
-  });
-  courseExpand.textContent = language === 'ar'
-    ? (coursesExpanded ? 'عرض دورات أقل' : 'استكشف جميع الدورات')
-    : (coursesExpanded ? 'Show fewer courses' : 'Explore all courses');
-});
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
