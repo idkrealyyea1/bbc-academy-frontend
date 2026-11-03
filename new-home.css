@@ -373,3 +373,15 @@ img { display: block; max-width: 100%; }
 .hero-student-login a { color: #fff; font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
 
 .story-actions, .teachers-actions { margin-top: 26px; display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* Desktop English hero only: the English title wraps to 3-4 lines at 82px,
+   so on short laptop screens the hero content overflows and the buttons
+   get clipped. Smaller, wider title = the intended 2 lines, everything fits.
+   Scoped to min-width 901px, so phone/tablet hero rules are untouched. */
+@media (min-width: 901px) {
+  body[lang="en"] .hero-content { max-width: 700px; }
+  body[lang="en"] .hero h1 { font-size: clamp(52px, 5vw, 68px); line-height: 1.12; max-width: 700px; }
+  body[lang="en"] .hero-lead { margin: 22px 0 26px; }
+  body[lang="en"] .hero-student-login { margin-top: 18px; }
+  body[lang="en"] .hero-note { margin-top: 30px; }
+}
