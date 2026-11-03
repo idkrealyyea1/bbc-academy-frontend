@@ -170,3 +170,10 @@ td{border-bottom:1px solid var(--u-line);padding:12px}
 .story-chapter h3 { font-size: 28px; margin: 10px 0 10px; line-height: 1.35; }
 .story-chapter p { color: #64727b; line-height: 1.9; }
 @media (max-width: 680px) { .story-hero { height: 260px; } .story-chapter { grid-template-columns: 1fr; gap: 18px; margin: 38px 0; } .story-chapter.flip .story-img { order: 0; } .story-img { height: 240px; } }
+
+/* Courses by section + add-a-course form. */
+.course-section-title { font-size: 24px; margin: 38px 0 16px; padding-bottom: 10px; border-bottom: 2px solid #c94243; }
+.add-course { margin-top: 48px; background: var(--u-paper); border: 1px solid var(--u-line); border-radius: 16px; padding: 28px; box-shadow: 0 14px 34px rgba(16,42,67,.10); }
+.add-course h2 { margin-top: 0; }
+.add-course .field { margin: 16px 0; }
+.add-course label span { display: block; font-weight: 700; margin-bottom: 6px; }

@@ -50,17 +50,57 @@ const COURSES=[
  {id:'business',level:'Advanced',en:'Business English',ar:'إنجليزية الأعمال',desc_en:'Meetings, emails, presentations and interviews in professional English.',desc_ar:'اجتماعات ورسائل وعروض ومقابلات بالإنجليزية المهنية.',weeks:8,lessons:24},
  {id:'conversation',level:'Elementary',en:'Conversation Club',ar:'نادي المحادثة',desc_en:'Weekly speaking practice on real-life topics, in small groups.',desc_ar:'تدريب أسبوعي على التحدث حول مواضيع واقعية في مجموعات صغيرة.',weeks:4,lessons:8},
 ];
+// Course sections: a course always lives in a section. Built-in sections have
+// EN/AR names; a custom section keeps the name its creator typed.
+const SECTIONS={
+ general:{en:'General English',ar:'الإنجليزية العامة'},
+ ielts:{en:'IELTS Preparation',ar:'التحضير لاختبار IELTS'},
+ business:{en:'Business English',ar:'إنجليزية الأعمال'},
+ conversation:{en:'Conversation Club',ar:'نادي المحادثة'},
+ kids:{en:'English for Young Learners',ar:'الإنجليزية للصغار'}
+};
+function sectionOf(c){ if(c.sectionName) return {en:c.sectionName,ar:c.sectionName}; const sec=SECTIONS[c.section]; return sec ? sec : {en:c.section||'',ar:c.section||''}; }
+function sectionName(c,lang){ const sec=sectionOf(c); return lang==='ar'?sec.ar:sec.en; }
+COURSES.forEach(c=>{ if(!c.section){ if(c.id.indexOf('general')===0) c.section='general'; else if(c.id==='ielts') c.section='ielts'; else if(c.id==='business') c.section='business'; else if(c.id==='conversation') c.section='conversation'; else if(c.id==='kids') c.section='kids'; } });
+// Demo-added courses, saved in this browser only (static demo, no backend yet).
+try{ const saved=JSON.parse(localStorage.getItem('bbc-custom-courses')||'[]'); saved.forEach(c=>{ c.custom=true; COURSES.push(c); }); }catch(e){}
+function saveCustomCourses(){ try{ localStorage.setItem('bbc-custom-courses', JSON.stringify(COURSES.filter(c=>c.custom))); }catch(e){} }
+function populateSectionSelect(){
+  const sel=document.getElementById('courseSection'); if(!sel) return;
+  const lang=getLang(); const seen={}; let html='';
+  Object.keys(SECTIONS).forEach(k=>{ html+=`<option value="${k}" data-en="${SECTIONS[k].en}" data-ar="${SECTIONS[k].ar}">${lang==='ar'?SECTIONS[k].ar:SECTIONS[k].en}</option>`; });
+  COURSES.filter(c=>c.custom && c.sectionName && !seen[c.sectionName]).forEach(c=>{ seen[c.sectionName]=1; html+=`<option value="custom:${c.sectionName}" data-en="${c.sectionName}" data-ar="${c.sectionName}">${c.sectionName}</option>`; });
+  html+=`<option value="__new" data-en="Create a new section…" data-ar="إنشاء قسم جديد…">${lang==='ar'?'إنشاء قسم جديد…':'Create a new section…'}</option>`;
+  sel.innerHTML=html;
+  const wrap=document.getElementById('newSectionWrap'); if(wrap) wrap.hidden = sel.value!=='__new';
+}
+window.__onLangChange=function(){ populateSectionSelect(); };
 function renderCourses(filter,lang){
   const grid=document.getElementById('courseGrid'); if(!grid) return;
   const list=COURSES.filter(c=>filter==='all'||c.level===filter);
-  grid.innerHTML=list.map(c=>`<article class="card"><span class="tag">${lang==='ar'?({Beginner:'مبتدئ',Elementary:'ابتدائي',Intermediate:'متوسط',Advanced:'متقدم'}[c.level]||c.level):c.level}</span><h3>${lang==='ar'?c.ar:c.en}</h3><p class="muted">${lang==='ar'?c.desc_ar:c.desc_en}</p><p><strong>${c.weeks}</strong> ${lang==='ar'?'أسابيع':'weeks'} · <strong>${c.lessons}</strong> ${lang==='ar'?'درس':'lessons'}</p><p><a class="btn small" href="course.html?id=${c.id}">${lang==='ar'?'التفاصيل والتسجيل':'Details & enrol'}</a></p></article>`).join('') || `<p class="muted">${lang==='ar'?'لا توجد دورات في هذا المستوى.':'No courses in this level.'}</p>`;
+  if(!list.length){ grid.innerHTML=`<p class="muted">${lang==='ar'?'لا توجد دورات في هذا المستوى.':'No courses in this level.'}</p>`; return; }
+  const lvlAr={Beginner:'مبتدئ',Elementary:'ابتدائي',Intermediate:'متوسط',Advanced:'متقدم'};
+  const groups=[]; const byKey={};
+  list.forEach(c=>{ const key=c.sectionName?('custom:'+c.sectionName):('built:'+(c.section||'')); if(!byKey[key]){ byKey[key]=[]; groups.push(key); } byKey[key].push(c); });
+  grid.innerHTML=groups.map(key=>{
+    const first=byKey[key][0];
+    const title=sectionName(first,lang);
+    const cards=byKey[key].map(c=>`<article class="card"><span class="tag">${lang==='ar'?(lvlAr[c.level]||c.level):c.level}</span>${c.custom?`<span class="tag">${lang==='ar'?'تجريبية':'Demo'}</span>`:''}<h3>${lang==='ar'?c.ar:c.en}</h3><p class="muted">${lang==='ar'?c.desc_ar:c.desc_en}</p><p><strong>${c.weeks}</strong> ${lang==='ar'?'أسابيع':'weeks'} · <strong>${c.lessons}</strong> ${lang==='ar'?'درس':'lessons'}</p><p><a class="btn small" href="course.html?id=${c.id}">${lang==='ar'?'التفاصيل والتسجيل':'Details & enrol'}</a>${c.custom?` <button class="btn small outline" data-remove="${c.id}">${lang==='ar'?'إزالة':'Remove'}</button>`:''}</p></article>`).join('');
+    return `<h2 class="course-section-title">${title}</h2><div class="grid grid3">${cards}</div>`;
+  }).join('');
+  grid.querySelectorAll('[data-remove]').forEach(btn=>btn.addEventListener('click',()=>{
+    if(!window.confirm(lang==='ar'?'إزالة هذه الدورة التجريبية؟':'Remove this demo course?')) return;
+    const idx=COURSES.findIndex(c=>c.id===btn.dataset.remove);
+    if(idx>=0) COURSES.splice(idx,1);
+    saveCustomCourses(); renderCourses(window.__filter||'all', getLang());
+  }));
 }
 function renderCourseDetail(lang){
   const params=new URLSearchParams(location.search); const c=COURSES.find(x=>x.id===params.get('id'))||COURSES[0];
   const el=document.getElementById('courseDetail'); if(!el) return;
   const learn = lang==='ar' ? ['التحدث والاستماع','القراءة والكتابة','المفردات والقواعد','ممارسة واقعية'] : ['Speaking & listening','Reading & writing','Vocabulary & grammar','Real-life practice'];
   const lvlAr = {Beginner:'مبتدئ',Elementary:'ابتدائي',Intermediate:'متوسط',Advanced:'متقدم'}[c.level]||c.level;
-  el.innerHTML=`<span class="tag">${lang==='ar'?lvlAr:c.level}</span><h1>${lang==='ar'?c.ar:c.en}</h1><p class="muted">${lang==='ar'?c.desc_ar:c.desc_en}</p><p><strong>${c.weeks}</strong> ${lang==='ar'?'أسابيع':'weeks'} · <strong>${c.lessons}</strong> ${lang==='ar'?'درس':'lessons'} · ${lang==='ar'?'الرسوم عند الاستفسار':'Fees on enquiry'}</p><div class="grid grid2"><div class="card"><h3>${lang==='ar'?'ماذا ستتعلم؟':'What you will learn'}</h3><ul>${learn.map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="card"><h3>${lang==='ar'?'تفاصيل الدورة':'Course details'}</h3><p>${lang==='ar'?'مجموعات صغيرة وحصص تركّز على التحدث. تُؤكَّد المواعيد والمجموعة عند الحجز.':'Small groups and speaking-first lessons. Your schedule and group are confirmed when you book.'}</p><p><a class="btn" href="booking.html">${lang==='ar'?'احجز مقعدك':'Book your seat'}</a></p></div></div>`;
+  el.innerHTML=`<span class="tag">${lang==='ar'?lvlAr:c.level}</span><h1>${lang==='ar'?c.ar:c.en}</h1><p class="muted">${lang==='ar'?c.desc_ar:c.desc_en}</p><p class="muted">${lang==='ar'?'القسم: ':'Section: '}${sectionName(c,lang)}</p><p><strong>${c.weeks}</strong> ${lang==='ar'?'أسابيع':'weeks'} · <strong>${c.lessons}</strong> ${lang==='ar'?'درس':'lessons'} · ${lang==='ar'?'الرسوم عند الاستفسار':'Fees on enquiry'}</p><div class="grid grid2"><div class="card"><h3>${lang==='ar'?'ماذا ستتعلم؟':'What you will learn'}</h3><ul>${learn.map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="card"><h3>${lang==='ar'?'تفاصيل الدورة':'Course details'}</h3><p>${lang==='ar'?'مجموعات صغيرة وحصص تركّز على التحدث. تُؤكَّد المواعيد والمجموعة عند الحجز.':'Small groups and speaking-first lessons. Your schedule and group are confirmed when you book.'}</p><p><a class="btn" href="booking.html">${lang==='ar'?'احجز مقعدك':'Book your seat'}</a></p></div></div>`;
 }
 // Placement quiz (mock, 6 questions)
 const QUIZ=[
@@ -110,4 +150,36 @@ document.addEventListener('DOMContentLoaded', () => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } });
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+});
+
+// Add a course: choose an existing section, or create a new one, and the
+// course goes into that section. Demo only: saved in this browser.
+document.addEventListener('DOMContentLoaded',()=>{
+  const form=document.getElementById('addCourseForm'); if(!form) return;
+  populateSectionSelect();
+  const sel=document.getElementById('courseSection');
+  sel.addEventListener('change',()=>{ const wrap=document.getElementById('newSectionWrap'); if(wrap) wrap.hidden = sel.value!=='__new'; });
+  form.addEventListener('submit',e=>{
+    e.preventDefault(); const lang=getLang();
+    const name=document.getElementById('courseName').value.trim();
+    const weeks=parseInt(document.getElementById('courseWeeks').value,10);
+    const lessons=parseInt(document.getElementById('courseLessons').value,10);
+    if(!name || !weeks || !lessons){ alert(lang==='ar'?'املأ اسم الدورة وعدد الأسابيع والدروس.':'Please fill in the course name, weeks and lessons.'); return; }
+    let sectionNameVal='', sectionKey='';
+    if(sel.value==='__new'){
+      sectionNameVal=document.getElementById('courseSectionNew').value.trim();
+      if(!sectionNameVal){ alert(lang==='ar'?'اكتب اسم القسم الجديد.':'Please type the new section name.'); return; }
+    } else if(sel.value.indexOf('custom:')===0){ sectionNameVal=sel.value.slice(7); }
+    else { sectionKey=sel.value; }
+    const course={ id:'custom-'+Date.now(), en:name, ar:name,
+      desc_en:document.getElementById('courseDesc').value.trim()||'A new course added in the demo.',
+      desc_ar:document.getElementById('courseDesc').value.trim()||'دورة جديدة أُضيفت في العرض التجريبي.',
+      level:document.getElementById('courseLevel').value, weeks:weeks, lessons:lessons, custom:true };
+    if(sectionNameVal) course.sectionName=sectionNameVal; else course.section=sectionKey;
+    COURSES.push(course); saveCustomCourses(); populateSectionSelect();
+    renderCourses(window.__filter||'all', lang);
+    const ok=document.getElementById('addCourseOk'); if(ok){ ok.hidden=false; ok.textContent = lang==='ar' ? ('تمت إضافة "'+name+'" إلى قسم '+sectionName(course,lang)+' ✔') : ('"'+name+'" was added to the '+sectionName(course,lang)+' section ✔'); }
+    form.reset(); populateSectionSelect();
+    document.getElementById('courseGrid').scrollIntoView({behavior:'smooth'});
+  });
 });
